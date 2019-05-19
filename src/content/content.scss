@@ -1,0 +1,16 @@
+.tabs-component {
+    margin: 0;
+    .tabs-component-tabs {
+        padding-left: 0;
+        margin-left: 0;
+        .tabs-component-tab {
+            height: 43px;
+        }
+        .tabs-component-tab.is-active {
+            height: 45px;
+        }
+    }
+    .tabs-component-panels {
+        padding: 20px;
+    }
+}
