@@ -34,8 +34,10 @@ export default {
   },
   props: ['highlightedText', 'mousePosition'],
   created() {
+    // 全文を翻訳する
     of(this.highlightedText).pipe(
       map(text => {
+        // ここで複数のStreamとなり
         return Axios.get(`https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20190519T201455Z.8a4682f680e240f3.815e0741b24fc40dd5a9f2f593a3b5e920cdece2`, {
           params: {
             text,
@@ -43,24 +45,28 @@ export default {
           },
         })
       }),
+      // ~ 統一にする
       mergeMap(response => response)
+      // ~ 成果を修理する
     ).subscribe(
       translationResponse => {
         const { data: { text } } = translationResponse;
-        console.log(text);
 
         return this.translation = text[0];
       },
       error => console.log(error)
     );
 
+    // 漢字を一つ一つにする
     from(this.highlightedText).pipe(
+      // ブランクを避ける
       filter(kanji => {
         if (kanji != ' '){
           return true;
         }
         return false;
       }),
+      // リクエストを遅延する
       concatMap(kanji => of(kanji).pipe(delay(200))),
       mergeMap(kanji => {
         return Axios.get(`https://kanjialive-api.p.rapidapi.com/api/public/kanji/${encodeURI(kanji)}`, {
@@ -70,9 +76,11 @@ export default {
           },
         })
       }),
+      // 壊れリスポンスを避ける
       filter(response => {
         return response.status;
       }),
+      // リスポンスを
       map(response => {
         return response.data;
       }),

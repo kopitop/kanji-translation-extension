@@ -10,7 +10,6 @@ import './content.scss';
   console.log('Initialized');
 
   const InitKanjiBushuToolTipVueObject = function(e) {
-    // debugger;
     let text;
     if (window.getSelection) {
       text = window.getSelection();
