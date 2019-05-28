@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Hello world!</p>
+    <p>ようこそ</p>
   </div>
 </template>
 
